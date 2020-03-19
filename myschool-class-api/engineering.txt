@@ -1,0 +1,31 @@
+school -> ["name","address","start_date","id"] -> can be attaced to -> 
+  class: []
+  teacher: []
+  student: []
+  
+class -> ["name","description"] -> can be attaced to ->
+  subject: []
+  student: []
+  exam: []
+  fees
+
+subject -> ["name","description","language"] -> can be attaced to ->
+  class
+  teacher:[]
+
+teacher -> ["name","address","qualification","specialist"] -> can be attaced to ->
+  school
+  subject:[]
+
+student -> ["name","address","admission_date","fees"] -> can be attaced to ->
+  school
+  class: []
+    subjects: []
+    exams []
+
+exams -> ["name"] -> can be attaced to ->
+  subject:[]
+  
+fees
+    
+    

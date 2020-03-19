@@ -1,0 +1,109 @@
+- view:
+    name: myschool
+    view-type: list
+    description: 'myschool templating'
+    columns:
+        - status
+        - weather
+        - job
+        - last-success
+        - last-failure
+        - last-duration
+        - extra-build-parameter: MY_PARAMETER
+    regex: .*myschool-.*
+- job:
+    name: myschool-class-api_build
+    display-name: 'myschool-class-api_build'
+    description: 'myschool-class-api build'
+    project-type: pipeline
+    pipeline-scm:
+      scm:
+      - git:
+          branches:
+          - master
+          url: https://github.com/samitkumarpatel/myschool-class-api.git
+          credentials-id: 'github_token'
+          skip-tag: true
+          wipe-workspace: false
+      script-path: Jenkinsfile
+      lightweight-checkout: true
+- job:
+    name: myschool-school-api_build
+    display-name: 'myschool-school-api_build'
+    description: 'myschool-school-api build'
+    project-type: pipeline
+    pipeline-scm:
+      scm:
+      - git:
+          branches:
+          - master
+          url: https://github.com/samitkumarpatel/myschool-school-api.git
+          credentials-id: 'github_token'
+          skip-tag: true
+          wipe-workspace: false
+      script-path: Jenkinsfile
+      lightweight-checkout: true
+- job:
+    name: myschool-student-api_build
+    display-name: 'myschool-student-api_build'
+    description: 'myschool-student-api build'
+    project-type: pipeline
+    pipeline-scm:
+      scm:
+      - git:
+          branches:
+          - master
+          url: https://github.com/samitkumarpatel/myschool-student-api.git
+          credentials-id: 'github_token'
+          skip-tag: true
+          wipe-workspace: false
+      script-path: Jenkinsfile
+      lightweight-checkout: true
+- job:
+    name: myschool-subject-api_build
+    display-name: 'myschool-subject-api_build'
+    description: 'myschool-subject-api build'
+    project-type: pipeline
+    pipeline-scm:
+      scm:
+      - git:
+          branches:
+          - master
+          url: https://github.com/samitkumarpatel/myschool-subject-api.git
+          credentials-id: 'github_token'
+          skip-tag: true
+          wipe-workspace: false
+      script-path: Jenkinsfile
+      lightweight-checkout: true
+- job:
+    name: myschool-teacher-api_build
+    display-name: 'myschool-teacher-api_build'
+    description: 'myschool-teacher-api build'
+    project-type: pipeline
+    pipeline-scm:
+      scm:
+      - git:
+          branches:
+          - master
+          url: https://github.com/samitkumarpatel/myschool-teacher-api.git
+          credentials-id: 'github_token'
+          skip-tag: true
+          wipe-workspace: false
+      script-path: Jenkinsfile
+      lightweight-checkout: true
+- job:
+    name: myschool-ui_build
+    display-name: 'myschool-ui_build'
+    description: 'myschool-ui build'
+    project-type: pipeline
+    pipeline-scm:
+      scm:
+      - git:
+          branches:
+          - master
+          url: https://github.com/samitkumarpatel/myschool-ui.git
+          credentials-id: 'github_token'
+          skip-tag: true
+          wipe-workspace: false
+      script-path: Jenkinsfile
+      lightweight-checkout: true
