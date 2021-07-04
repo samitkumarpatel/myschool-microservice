@@ -54,7 +54,7 @@
     </div>    
 </template>
 <script>
-import crud from './Crud.vue';
+import crud from './CRUD.vue';
 export default {
     components : {
         crud
