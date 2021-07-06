@@ -7,11 +7,11 @@ var cors = require('cors')
 var ObjectId = require('mongodb').ObjectID;
 
 var application = {
-    "port": 3003,
-    "mongo" : {
-        "address": "mongodb://localhost:27017",
-        "db": "schools",
-        "collection": "teacher"
+  port: process.env.PORT || 3000,
+  mongo : {
+    address: process.env.MONGODB_URI || "mongodb://localhost:27017",
+    db : "schools",
+    collection: "class"
     }
 }
 
@@ -48,7 +48,7 @@ app.post("/class",async (req,res)=> {
 
 app.get("/class",(req,res)=> {
   MongoClient.connect(application.mongo.address,{ useNewUrlParser: true }, function (err, client) {
-    if (err) 
+    if(err) 
       res.status(500).json({'error':err})
     var db = client.db(application.mongo.db)
     db.collection(application.mongo.collection).find().toArray(function (err, result) {
@@ -109,6 +109,14 @@ app.delete("/class/:id",(req,res)=> {
     });
   });
 });
+
+
+app.use(function (err, req, res, next) {
+  res.status(500).json({
+    message: err.message,
+    error: err
+  })
+})
 
 app.listen(application.port,()=>{
   console.log('SERVER STARTED on %s',application.port)
