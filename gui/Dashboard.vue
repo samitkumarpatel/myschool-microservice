@@ -78,7 +78,7 @@ export default {
                 },
                 {
                     name: 'subject',
-                    endpoint: 'http://localhost:xxxx/subject',
+                    endpoint: 'http://localhost:3002/subject',
                     properties: [],
                     datas:[]
                 },

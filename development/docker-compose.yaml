@@ -18,4 +18,11 @@ services:
       MONGODB_URI: 'mongo:27017'
     ports:
     - "3001:3000"
+  subject-api:
+    build:
+      context: ../subject-api
+    environment:
+      MONGODB_URI: 'mongo:27017'
+    ports:
+    - "3002:3000"
   
