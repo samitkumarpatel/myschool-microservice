@@ -6,15 +6,6 @@ var MongoClient = require('mongodb').MongoClient
 var cors = require('cors')
 var ObjectId = require('mongodb').ObjectID;
 
-var application = {
-    "port": 3000,
-    "mongo" : {
-        "address": "mongodb://localhost:27017",
-        "db": "schools",
-        "collection": "school"
-    }
-}
-
 app.use(bodyParser.urlencoded({
   extended: true
 }))
@@ -23,95 +14,125 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride())
 
+function mongo(callback) {
+  MongoClient.connect(
+      `mongodb://${process.env.MONGODB_URI}` || "mongodb://localhost:27017",
+      { useNewUrlParser: true , connectTimeoutMS: 3000,serverSelectionTimeoutMS: 3000}, 
+      function (e, client) {
+        if(e) {
+          callback(e,null)
+        } else {
+          callback(null,client.db("schools"))
+        }
+  });
+}
+
 
 app.get("/school/prop",(req,res)=> {
-    properties= [
-        {'name':'Name','modalName':'name','inputType':'text'},
-        {'name':'Address','modalName':'address','inputType':'text'},
-        {'name':'Regd. No','modalName':'regdNo','inputType':'text'},
-        {'name':'Est. Date','modalName':'estDate','inputType':'date'}
-    ]
-    res.json(properties)
+    res.json([
+      {'name':'Name','modalName':'name','inputType':'text'},
+      {'name':'Address','modalName':'address','inputType':'text'},
+      {'name':'Regd. No','modalName':'regdNo','inputType':'text'},
+      {'name':'Est. Date','modalName':'estDate','inputType':'date'}
+  ])
 })
 
-app.post("/school",async (req,res)=> {
+app.post("/school",async (req,res,next)=> {
   
-  MongoClient.connect(application.mongo.address,{ useNewUrlParser: true }, function (err, client) {
-    if (err) 
-      res.status(500).json({'error':err})
-    var db = client.db(application.mongo.db)
-    db.collection(application.mongo.collection).insertOne(req.body,(err,result) => {
-      if (err) 
-        res.status(500).json({'error':err})
-      res.status(200).json(result);
-    });
-  });
+  mongo((e,d)=>{
+    if(e) {
+      next(e)
+    } else {
+      d.collection("school").insertOne(req.body,(err,result) => {
+        if (err){
+          next(err)
+        } else {
+          res.status(200).json(result);
+        }        
+      });
+    }
+  })
 });
 
-app.get("/school",(req,res)=> {
-  MongoClient.connect(application.mongo.address,{ useNewUrlParser: true }, function (err, client) {
-    if (err) 
-      res.status(500).json({'error':err})
-    var db = client.db(application.mongo.db)
-    db.collection(application.mongo.collection).find().toArray(function (err, result) {
-      if (err) 
-        res.status(500).json({'error':err})
-      res.status(200).json(result);
-    });
-  });
+app.get("/school",(req,res,next)=> {
+
+  mongo((e,d)=>{
+    if(e) {
+      next(e)
+    } else {
+      d.collection("school").find().toArray(function (err, result)  {
+        if (err){
+          next(err)
+        } else {
+          res.status(200).json(result);
+        }        
+      });
+    }
+  })
 });
 
-app.get("/school/:id",(req,res)=> {
-  if(req.params.id!=undefined && req.params.id.length < 24) {
-    res.status(500).json({'error': 'not a valid Id'})
-    return null;
-  }
-  MongoClient.connect(application.mongo.address,{ useNewUrlParser: true }, function (err, client) {
-    if (err) 
-      res.status(500).json({'error':err})
-    var db = client.db(application.mongo.db)
-    db.collection(application.mongo.collection).findOne({"_id": new ObjectId(req.params.id)},function (err, result) {
-      if (err) res.status(500).json({'error':err})
-      res.status(200).json(result);
-    });
-  });
+app.get("/school/:id",(req,res,next)=> {
+
+  mongo((e,d)=>{
+    if(e) {
+      next(e)
+    } else {
+      d.collection("school").findOne({"_id": new ObjectId(req.params.id)},function (err, result) {
+        if (err){
+          next(err)
+        } else {
+          res.status(200).json(result);
+        }        
+      });
+    }
+  })
+
 });
 
-app.put("/school/:id",(req,res)=> {
-  if(req.params.id!=undefined && req.params.id.length < 24) {
-    res.status(500).json({'error': 'not a valid Id'})
-    return null;
-  }
-  MongoClient.connect(application.mongo.address,{ useNewUrlParser: true }, function (err, client) {
-    if (err) 
-      res.status(500).json({'error':err})
-    var db = client.db(application.mongo.db)
-    //update
-    db.collection(application.mongo.collection).updateOne({"_id" : new ObjectId(req.params.id)}, { $set: req.body}, function(err, result) {
-      if (err) 
-        res.status(500).json({'error':err})
-      res.status(200).json(result);
-    });
-  });
+app.put("/school/:id",(req,res, next)=> {
+
+  mongo((e,d)=>{
+    if(e) {
+      next(e)
+    } else {
+      d.collection("school").updateOne({"_id" : new ObjectId(req.params.id)}, { $set: req.body}, function(err, result) {
+        if (err){
+          next(err)
+        } else {
+          res.status(200).json(result);
+        }        
+      });
+    }
+  })
+
 });
 
-app.delete("/school/:id",(req,res)=> {
-  if(req.params.id!=undefined && req.params.id.length < 24) {
-    res.status(500).json({'error': 'not a valid Id'})
-    return null;
-  } 
-  MongoClient.connect(application.mongo.address,{ useNewUrlParser: true }, function (err, client) {
-    if (err) 
-      res.status(500).json({'error':err})
-    var db = client.db(application.mongo.db)
-    db.collection(application.mongo.collection).deleteOne({"_id" : new ObjectId(req.params.id)}, function(err, result) {
-      if (err) 
-        res.status(500).json({'error':err})
-      res.status(200).json(result);
-    });
-  });
+app.delete("/school/:id",(req,res, next)=> {
+  mongo((e,d)=>{
+    if(e) {
+      next(e)
+    } else {
+      d.collection("class").deleteOne({"_id" : new ObjectId(req.params.id)}, function(err, result) {
+        if (err){
+          next(err)
+        } else {
+          res.status(200).json(result);
+        }        
+      });
+    }
+  })
 });
 
-app.listen(application.port,()=>{
-  console.log('SERVER STARTED on %s',application.port)
+app.use(function (err, req, res, next) {
+  res.status(500).json({
+    message: err.message,
+    name: err.name
+  })
+})
+
+const PORT = process.env.PORT || 3000
+const HOST = "http://0.0.0.0"
+
+app.listen(PORT,()=>{
+  console.log(`${require('./package.json').name} started on ${HOST}:${PORT}`)
 })

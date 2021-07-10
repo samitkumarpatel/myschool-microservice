@@ -78,25 +78,25 @@ export default {
                 },
                 {
                     name: 'subject',
-                    endpoint: 'http://localhost:3001/subject',
+                    endpoint: 'http://localhost:xxxx/subject',
                     properties: [],
                     datas:[]
                 },
                 {
                     name: 'teacher',
-                    endpoint: 'http://localhost:3002/teacher',
+                    endpoint: 'http://localhost:xxxx/teacher',
                     properties: [],
                     datas:[]
                 },
                 {
                     name: 'class',
-                    endpoint: 'http://localhost:3003/class',
+                    endpoint: 'http://localhost:3001/class',
                     properties: [],
                     datas:[]
                 },
                 {
                     name: 'student',
-                    endpoint: 'http://localhost:3004/student',
+                    endpoint: 'http://localhost:xxxx/student',
                     properties: [],
                     datas:[]
                 }
