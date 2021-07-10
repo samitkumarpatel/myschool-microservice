@@ -16,7 +16,7 @@ app.use(methodOverride())
 
 function mongo(callback) {
   MongoClient.connect(
-      `mongodb://${process.env.MONGODB_URI}` || "mongodb://localhost:27017",
+      process.env.MONGODB_URI || "mongodb://localhost:27017",
       { useNewUrlParser: true , connectTimeoutMS: 3000,serverSelectionTimeoutMS: 3000}, 
       function (e, client) {
         if(e) {
@@ -61,7 +61,7 @@ app.get("/subject",(req,res,next)=> {
     if(e) {
       next(e)
     } else {
-      d.collection(application.mongo.collection).find().toArray(function (err, result) {
+      d.collection("subject").find().toArray(function (err, result) {
         if (err){
           next(err)
         } else {

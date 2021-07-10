@@ -17,7 +17,7 @@ app.use(methodOverride())
 
 function mongo(callback) {
   MongoClient.connect(
-      `mongodb://${process.env.MONGODB_URI}` || "mongodb://localhost:27017",
+      process.env.MONGODB_URI || "mongodb://localhost:27017",
       { useNewUrlParser: true , connectTimeoutMS: 3000,serverSelectionTimeoutMS: 3000}, 
       function (e, client) {
         if(e) {

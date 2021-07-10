@@ -30,19 +30,19 @@
 
                     <div class="tab-content">
                         <div id="school" class="tab-pane fade in show active">
-                            <crud :entity="entitys[0]" v-if="enable('school')"/>
-                        </div>
-                        <div id="subject" class="tab-pane fade">
-                            <crud :entity="entitys[1]" v-if="enable('subject')"/>
-                        </div>
-                        <div id="teacher" class="tab-pane fade">
-                            <crud :entity="entitys[2]" v-if="enable('teacher')"/>
+                            <crud :entity="entitys.school" v-if="enable('school')"/>
                         </div>
                         <div id="class" class="tab-pane fade">
-                            <crud :entity="entitys[3]" v-if="enable('class')"/>
+                            <crud :entity="entitys.class" v-if="enable('class')"/>
+                        </div>
+                        <div id="subject" class="tab-pane fade">
+                            <crud :entity="entitys.subject" v-if="enable('subject')"/>
+                        </div>
+                        <div id="teacher" class="tab-pane fade">
+                            <crud :entity="entitys.teacher" v-if="enable('teacher')"/>
                         </div>
                         <div id="student" class="tab-pane fade">
-                            <crud :entity="entitys[4]" v-if="enable('student')"/>
+                            <crud :entity="entitys.student" v-if="enable('student')"/>
                         </div>
                     </div>
             </section>
@@ -69,38 +69,34 @@ export default {
             },
             currentlySelectedTab: ''
             ,
-            entitys: [
-                {
+            entitys: {
+                "school": {
                     name: 'school',
                     endpoint: 'http://localhost:3000/school',
                     properties: [],
                     datas:[]
-                },
-                {
-                    name: 'subject',
-                    endpoint: 'http://localhost:3002/subject',
-                    properties: [],
-                    datas:[]
-                },
-                {
-                    name: 'teacher',
-                    endpoint: 'http://localhost:xxxx/teacher',
-                    properties: [],
-                    datas:[]
-                },
-                {
+                },"class": {
                     name: 'class',
                     endpoint: 'http://localhost:3001/class',
                     properties: [],
                     datas:[]
-                },
-                {
+                },"subject" : {
+                    name: 'subject',
+                    endpoint: 'http://localhost:3002/subject',
+                    properties: [],
+                    datas:[]
+                },"teacher": {
+                    name: 'teacher',
+                    endpoint: 'http://localhost:3003/teacher',
+                    properties: [],
+                    datas:[]
+                },"student": {
                     name: 'student',
-                    endpoint: 'http://localhost:xxxx/student',
+                    endpoint: 'http://localhost:3004/student',
                     properties: [],
                     datas:[]
                 }
-            ],
+            },
             c: 'school'
         }
     },
