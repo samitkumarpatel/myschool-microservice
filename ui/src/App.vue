@@ -30,11 +30,8 @@
   <router-view/>
 
   <footer>
-    <hr>
     <small>
       <p>@ all right received!</p>
-      <a href="#">contact</a>|
-      <a href="#">about us</a>
     </small>
   </footer>
 </template>
@@ -49,6 +46,7 @@ img {
   width: 35px;
 }
 footer {
-  margin-top: 30px;
+  margin-top: 150px;
+  color: gray;
 }
 </style>
